@@ -1,5 +1,5 @@
 
-# AtliQ Tees: Talk to a Database  
+# LLM-Powered SQL Database Assistant  
 
 This is an end to end LLM project based on Groq LLM and Langchain. We are building a system that can talk to MySQL database. 
 User asks questions in a natural language and the system generates answers by converting those questions to an SQL query and
@@ -10,7 +10,7 @@ will may ask questions such as,
 - How much sales our store will generate if we can sell all extra-small size t shirts after applying discounts?
 The system is intelligent enough to generate accurate queries for given question and execute them on MySQL database
 
-![](atliq_tees.png)
+<img width="1521" height="508" alt="Screenshot 2026-03-12 151838" src="https://github.com/user-attachments/assets/8f751d58-d4e2-4d05-a01b-99fb895aa237" />
 
 ## Project Highlights
 

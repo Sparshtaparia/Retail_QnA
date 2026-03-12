@@ -133,21 +133,29 @@ Answer: {Answer}"""
     return chain
 
 
-# Run text-to-SQL safely
-def run_text_to_sql(chain, db, question):
-    """
-    Generate SQL from question using chain, clean it, execute on DB,
-    and return numeric value.
-    """
+def run_text_to_sql(chain, question):
     response = chain.invoke({"query": question})
+    
+    # 1. Get the SQL
+    sql_query = response.get("result", "")
+    if "SELECT" not in sql_query.upper():
+        sql_query = extract_sql_from_steps(response.get("intermediate_steps", []))
 
-    # Extract the actual SQL string
-    raw_sql = extract_sql_from_steps(response.get("intermediate_steps", []))
-    cleaned_sql = clean_sql_query(raw_sql)
+    sql_query = clean_sql_query(sql_query)
 
-    # Execute on DB
-    result = db.run(cleaned_sql)
+    # 2. Run against DB
+    db = chain.database 
+    result = db.run(sql_query)
 
-    # Extract numeric value
-    numeric_answer = result[0][0] if result and len(result) > 0 else None
-    return numeric_answer
+    # 3. CLEAN THE OUTPUT (The "2606" fix)
+    try:
+        # result is usually "[(Decimal('2606'),)]"
+        # We use regex to find only the digits
+        import re
+        numeric_match = re.search(r"(\d+)", result)
+        if numeric_match:
+            return numeric_match.group(1)
+    except Exception:
+        pass
+        
+    return result

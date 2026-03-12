@@ -4,9 +4,9 @@ from langchain_community.utilities import SQLDatabase
 from urllib.parse import quote_plus
 import os
 
-st.title("AtliQ T Shirts: Database Q&A 👕")
+st.title("LLM-Powered SQL Database Assistant ")
 
-question = st.text_input("Question:")
+question = st.text_input("Type your inventory or sales question here: ")
 
 if question:
     # It is better to initialize the chain once outside the 'if' 
